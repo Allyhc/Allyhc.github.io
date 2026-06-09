@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#144d2c" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Delta T" />
+    <title>Calculadora Delta T</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./assets/icon-192.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <img src="./assets/conspray-banner.png" alt="ConSpray" />
+        </div>
+        <button id="installButton" class="icon-button hidden" type="button" aria-label="Instalar app" title="Instalar app">
+          <span aria-hidden="true">+</span>
+        </button>
+      </header>
+
+      <section class="result-panel" aria-live="polite">
+        <div class="status-row">
+          <span id="statusPill" class="status-pill ideal">IDEAL</span>
+          <span id="timestamp" class="timestamp"></span>
+        </div>
+        <div class="metric-grid">
+          <div>
+            <span class="metric-label">Delta T</span>
+            <strong id="deltaValue">5,6</strong>
+            <span class="metric-unit">°C</span>
+          </div>
+          <div>
+            <span class="metric-label">Bulbo úmido</span>
+            <strong id="wetBulbValue">29,4</strong>
+            <span class="metric-unit">°C</span>
+          </div>
+        </div>
+        <div class="delta-scale" aria-label="Escala de Delta T">
+          <div id="scaleMarker" class="scale-marker"></div>
+        </div>
+        <p id="recommendation" class="recommendation">
+          Condição favorável para aplicação, mantendo controle de vento, gota, altura e faixa.
+        </p>
+      </section>
+
+      <section class="input-panel">
+        <form id="calculatorForm" autocomplete="off">
+          <div class="field-group">
+            <label for="temperature">Temperatura do ar</label>
+            <div class="number-row">
+              <input id="temperature" name="temperature" type="range" min="-20" max="60" step="0.1" value="35" />
+              <input id="temperatureNumber" type="number" min="-20" max="60" step="0.1" inputmode="decimal" value="35" />
+              <span>°C</span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="humidity">Umidade relativa</label>
+            <div class="number-row">
+              <input id="humidity" name="humidity" type="range" min="1" max="100" step="0.1" value="65" />
+              <input id="humidityNumber" type="number" min="1" max="100" step="0.1" inputmode="decimal" value="65" />
+              <span>%</span>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <label>
+              <span>Vento</span>
+              <input id="wind" type="number" min="0" max="150" step="0.1" inputmode="decimal" placeholder="km/h" />
+            </label>
+            <label>
+              <span>Local/Talhão</span>
+              <input id="field" type="text" maxlength="80" placeholder="Fazenda / T-01" />
+            </label>
+            <label>
+              <span>Piloto/Equipe</span>
+              <input id="team" type="text" maxlength="80" placeholder="Equipe" />
+            </label>
+          </div>
+        </form>
+
+        <div class="action-bar">
+          <button id="saveButton" class="primary-action" type="button">
+            <span aria-hidden="true">✓</span>
+            Salvar
+          </button>
+          <button id="shareButton" class="tool-button" type="button" aria-label="Compartilhar resultado" title="Compartilhar resultado">
+            <span aria-hidden="true">↗</span>
+          </button>
+          <button id="csvButton" class="tool-button" type="button" aria-label="Baixar histórico CSV" title="Baixar histórico CSV">
+            <span aria-hidden="true">↓</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="reference-panel">
+        <div class="section-title">
+          <h2>Faixas de Decisão</h2>
+          <span id="historyCount">0 registros</span>
+        </div>
+        <div class="bands" aria-label="Faixas de classificação">
+          <div><b>0-2</b><span>Muito úmido</span><small>Cautela</small></div>
+          <div><b>2-8</b><span>Ideal</span><small>Aplicar</small></div>
+          <div><b>8-10</b><span>Atenção</span><small>Avaliar</small></div>
+          <div><b>10-12</b><span>Evitar</span><small>Evitar</small></div>
+          <div><b>&gt;12</b><span>Crítico</span><small>Não aplicar</small></div>
+        </div>
+      </section>
+
+      <section class="history-panel">
+        <div class="section-title">
+          <h2>Histórico</h2>
+          <button id="clearButton" class="text-button" type="button">Limpar</button>
+        </div>
+        <ol id="historyList" class="history-list"></ol>
+      </section>
+    </main>
+
+    <template id="historyItemTemplate">
+      <li>
+        <div>
+          <strong data-field="status"></strong>
+          <span data-field="date"></span>
+        </div>
+        <div class="history-values">
+          <span data-field="delta"></span>
+          <span data-field="weather"></span>
+        </div>
+        <p data-field="place"></p>
+      </li>
+    </template>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>
